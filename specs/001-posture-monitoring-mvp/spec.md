@@ -105,7 +105,7 @@ detail.
 ### User Story 4 - Session History & Summaries (Priority: P2)
 
 After each session the user sees it in their history with duration, alert
-count, and accuracy score, and can open it to review every alert with its
+count, and posture score, and can open it to review every alert with its
 category and their verdict.
 
 **Why this priority**: Users need proof the product works on them over time;
@@ -118,7 +118,7 @@ open history and verify the session row and its per-alert detail are complete.
 
 1. **Given** one or more completed sessions, **When** the user opens their
    session history, **Then** each session lists duration, alert count, and
-   accuracy score.
+   posture score.
 2. **Given** a session in history, **When** the user opens its detail, **Then**
    every alert shows its time, category, landmark snapshot summary, and verdict
    state.
@@ -137,8 +137,8 @@ exercises tuned to the user's most frequent problem areas.
 improvement, which drives retention — but they depend on data from stories 2–4.
 
 **Independent Test**: With several stored sessions, open the dashboard and
-verify the score trend renders, accuracy reflects verdicts, and tips and
-exercises are shown with sources.
+verify the score trend renders, classifier accuracy reflects verdicts, and
+tips and exercises are shown with sources.
 
 **Acceptance Scenarios**:
 
@@ -208,7 +208,7 @@ render from real aggregates and the registration call-to-action works.
 - Webcam permission denied or no camera available: clear Persian error, no
   session starts, quota untouched.
 - No person detected or user leaves the frame: monitoring shows a paused state;
-  paused time counts toward neither accuracy score nor quota.
+  paused time counts toward neither posture score nor quota.
 - Calibration attempted without a person detected: blocked with a prompt to
   reposition.
 - Multiple people in frame: the primary (largest) detected person is monitored.
@@ -224,7 +224,7 @@ render from real aggregates and the registration call-to-action works.
   locally, retried, and never silently dropped.
 - Browser without camera or notification support: clear unsupported-browser
   message before any session attempt.
-- Session with zero alerts: accuracy score reflects the full session as good
+- Session with zero alerts: posture score reflects the full session as good
   posture time.
 
 ## Requirements *(mandatory)*
@@ -242,7 +242,10 @@ render from real aggregates and the registration call-to-action works.
   when they trigger calibration, and allows recalibration later.
 - **FR-004**: During a session, system MUST compare live landmarks to the
   user's baseline geometrically and classify deviations into at least three
-  categories: neck, shoulders, and slouch.
+  categories: neck, shoulders, and slouch. Deviation thresholds MUST be
+  grounded in cited literature — forward-head angle: Hansraj KK (Surg Technol
+  Int, 2014); shoulders and slouch: NIOSH ergonomics guidelines — with
+  derivations documented in research.md §2 (Constitution III).
 - **FR-005**: On sustained deviation, system MUST raise an alert naming the
   specific category, delivered as a browser notification that reaches the user
   while the app tab is in the background, plus an optional sound alert whose
@@ -254,7 +257,7 @@ render from real aggregates and the registration call-to-action works.
   captured at alert time as labeled training data; unconfirmed alerts are
   persisted with an unconfirmed state.
 - **FR-008**: System MUST persist each session with duration, alert count,
-  accuracy score (share of monitored time in good posture), and per-alert
+  posture score (share of monitored time in good posture), and per-alert
   detail (time, category, landmark snapshot, verdict state).
 - **FR-009**: System MUST show the user a session history with per-session
   summary and drill-down to per-alert detail.
@@ -291,7 +294,7 @@ render from real aggregates and the registration call-to-action works.
 - **Posture Baseline**: landmark coordinates of the user's good seated posture,
   captured at calibration, versioned by calibration time.
 - **Monitoring Session**: one monitoring period — start/end times, duration,
-  alert count, accuracy score.
+  alert count, posture score.
 - **Posture Alert**: one flagged deviation — time, category (neck/shoulders/
   slouch), landmark snapshot at alert time, verdict (real/false/unconfirmed).
 - **Usage Quota**: monitoring time used against the tier allowance for the
@@ -305,8 +308,9 @@ render from real aggregates and the registration call-to-action works.
 
 - **SC-001**: A new user completes registration and their first calibrated
   monitoring session in under 3 minutes.
-- **SC-002**: Alerts reach the user within 2 seconds of a sustained posture
-  deviation, including when the app tab is in the background.
+- **SC-002**: Alerts reach the user within 2 seconds after the sustain threshold
+  is met (deviation held for T_sustain), including when the app tab is in the
+  background.
 - **SC-003**: Every alert names a specific reason (neck, shoulders, or slouch) —
   zero generic "bad posture" alerts.
 - **SC-004**: Fewer than 20% of confirmed alerts are marked false alarms,
@@ -320,7 +324,7 @@ render from real aggregates and the registration call-to-action works.
 - **SC-008**: Zero bytes of image or video data are transmitted to or stored on
   any server, verifiable by inspection of all stored and transmitted data.
 - **SC-009**: At least 60% of alerts receive a user verdict within 24 hours.
-- **SC-010**: Session accuracy scores match a manual recount of good/bad
+- **SC-010**: Session posture scores match a manual recount of good/bad
   periods within 5 percentage points on sampled sessions.
 
 ## Assumptions
@@ -339,7 +343,7 @@ render from real aggregates and the registration call-to-action works.
 - Monitoring runs while the app tab is open (foreground or background);
   closing the tab ends the session. Alerts in background tabs do not require
   the tab to be focused.
-- Accuracy score is the share of monitored (non-paused) time with posture
+- Posture score is the share of monitored (non-paused) time with posture
   within baseline thresholds; paused time is excluded.
 - "Classifier accuracy" on the dashboard is the share of alerts confirmed real
   (a proxy) until trained models ship in a later phase.
