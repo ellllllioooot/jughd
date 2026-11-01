@@ -1,0 +1,147 @@
+/* Jughd design tokens — owl-themed night-indigo + amber (plan.md §8, constitution VII).
+   RTL-first: layout uses logical properties throughout. */
+
+:root {
+  /* night-indigo + amber palette */
+  --color-bg: #12142e;
+  --color-surface: #1b1f42;
+  --color-surface-2: #242a58;
+  --color-border: #343b73;
+  --color-ink: #eceeff;
+  --color-ink-muted: #a6abd8;
+  --color-accent: #f5b942;
+  --color-accent-strong: #ffc857;
+  --color-accent-ink: #221a05;
+  --color-ok: #4cd4a0;
+  --color-warn: #f5b942;
+  --color-danger: #ff7b72;
+
+  /* Vazirmatn typography */
+  --font-sans: "Vazirmatn", "Tahoma", "Segoe UI", sans-serif;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.375rem;
+  --text-2xl: 1.75rem;
+  --text-3xl: 2.25rem;
+
+  /* spacing (logical-property friendly) */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+
+  --shadow-1: 0 1px 3px rgb(0 0 0 / 0.35);
+  --shadow-2: 0 8px 24px rgb(0 0 0 / 0.4);
+
+  --transition-fast: 120ms ease;
+  --transition-med: 240ms ease;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  background: var(--color-bg);
+  color: var(--color-ink);
+  line-height: 1.7;
+}
+
+/* RTL primitives: logical properties only — no physical left/right. */
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-6);
+}
+
+.btn {
+  font-family: inherit;
+  font-size: var(--text-base);
+  padding: var(--space-2) var(--space-6);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-2);
+  color: var(--color-ink);
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+.btn:hover {
+  background: var(--color-border);
+}
+
+.btn-primary {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-accent-ink);
+  font-weight: 700;
+}
+
+.btn-primary:hover {
+  background: var(--color-accent-strong);
+}
+
+.btn:focus-visible,
+a:focus-visible,
+input:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.input {
+  font-family: inherit;
+  font-size: var(--text-base);
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+  color: var(--color-ink);
+}
+
+.field-error {
+  color: var(--color-danger);
+  font-size: var(--text-sm);
+  margin-block-start: var(--space-1);
+}
+
+/* Motion is purposeful only (feedback/orientation) and honors user preference. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

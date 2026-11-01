@@ -23,11 +23,11 @@ and testing. Paths follow plan.md: `web/` (React + Vite SPA) and `api/`
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Create repository layout per plan.md Project Structure: `web/`, `api/`, `docker-compose.yml`, `Caddyfile`, `.env.example`, root `.gitignore`
-- [ ] T002 [P] Scaffold web app (Vite + React 19 + TypeScript + Vitest) in `web/`: `web/package.json`, `web/vite.config.ts` (dev proxy `/api` → api service), `web/tsconfig.json`, `web/index.html` (`lang="fa" dir="rtl"`), `web/src/main.tsx`
-- [ ] T003 [P] Scaffold api app (Node 22 + Express + TypeScript + zod + Vitest + supertest) in `api/`: `api/package.json`, `api/tsconfig.json`, `api/src/app.ts`, `api/tests/`
-- [ ] T004 [P] Docker Compose dev + prod profiles in `docker-compose.yml` (pinned `postgres:16-alpine`, api, web, caddy services) + TLS reverse proxy in `Caddyfile` (webcam requires HTTPS — research.md §9)
-- [ ] T005 [P] Prisma tooling in `api/prisma/schema.prisma` (datasource + generator) and Prisma client singleton `api/src/lib/prisma.ts`; add `DATABASE_URL`, `SESSION_SECRET`, `VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY` to `.env.example`
+- [X] T001 Create repository layout per plan.md Project Structure: `web/`, `api/`, `docker-compose.yml`, `Caddyfile`, `.env.example`, root `.gitignore`
+- [X] T002 [P] Scaffold web app (Vite + React 19 + TypeScript + Vitest) in `web/`: `web/package.json`, `web/vite.config.ts` (dev proxy `/api` → api service), `web/tsconfig.json`, `web/index.html` (`lang="fa" dir="rtl"`), `web/src/main.tsx`
+- [X] T003 [P] Scaffold api app (Node 22 + Express + TypeScript + zod + Vitest + supertest) in `api/`: `api/package.json`, `api/tsconfig.json`, `api/src/app.ts`, `api/tests/`
+- [X] T004 [P] Docker Compose dev + prod profiles in `docker-compose.yml` (pinned `postgres:16-alpine`, api, web, caddy services) + TLS reverse proxy in `Caddyfile` (webcam requires HTTPS — research.md §9)
+- [X] T005 [P] Prisma tooling in `api/prisma/schema.prisma` (datasource + generator) and Prisma client singleton `api/src/lib/prisma.ts`; add `DATABASE_URL`, `SESSION_SECRET`, `VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY` to `.env.example`
 
 ---
 
@@ -37,13 +37,13 @@ and testing. Paths follow plan.md: `web/` (React + Vite SPA) and `api/`
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T006 Define all six Prisma models + generate migration in `api/prisma/schema.prisma` + `api/prisma/migrations/`, per data-model.md constraints verbatim: **User** (email citext "unique, valid format, ≤254 chars"; username "unique, 3–32 chars, `[a-z0-9_]+`"; passwordHash "never exposed via API"; tier enum `FREE|PRO` default `FREE`), **Baseline** (landmarks "33×{x,y,z,score} — numbers only; score ∈ [0,1]"; "current baseline = latest per user"), **MonitoringSession** (status enum `ACTIVE|COMPLETED|QUOTA_EXHAUSTED`; durationSec "≥0"; postureScore "0–100"; baselineId FK), **PostureAlert** (clientKey "uuid unique — idempotency key"; category enum `NECK|SHOULDER|SLOUCH`; landmarksSnapshot "numbers only"; verdict enum `UNCONFIRMED|REAL|FALSE` default `UNCONFIRMED`), **AuthSession** ("token hash stored, raw id rides in the `sid` cookie"; "sliding expiry, absolute cap"), **PushSubscription** (endpoint unique, p256dh, auth); indexes per data-model.md: `MonitoringSession(userId, startedAt)`, `Alert(sessionId)`, `Alert(userId)`, `Alert(clientKey)` unique, `AuthSession(userId)`, `PushSubscription(userId)`
-- [ ] T007 [P] Zod validation schemas for all API payloads in `api/src/lib/validation.ts` per data-model.md trust-boundary rules: landmarks arrays "of finite numbers only", "0 ≤ durationSec ≤ elapsed wall time + 5%", "0 ≤ postureScore ≤ 100", verdict/category enums, email/username/password rules
-- [ ] T008 [P] Express app shell in `api/src/app.ts` + `api/src/lib/errors.ts`: error envelope `{"error": {"code", "message"}}` per contracts/api.md, zod error mapping, 404/500 handlers, helmet security headers, JSON body limit, ops `/healthz`
-- [ ] T009 [P] Env config loader `api/src/lib/config.ts`: DATABASE_URL, SESSION_SECRET, VAPID keys, `FREE_MONTHLY_SECONDS` (default 43200 = 12h), fail-fast on missing/invalid values
-- [ ] T010 [P] Typed API client `web/src/lib/api.ts`: fetch wrapper with credentials, error-envelope parsing to code enum, TS types mirroring contracts/api.md
-- [ ] T011 [P] Design-system foundation in `web/src/design/`: CSS custom-property tokens (owl-themed night-indigo + amber palette, Vazirmatn font stack), RTL logical-property primitives, Persian numeral helper, `prefers-reduced-motion` gate utility, owl mascot SVG (plan.md §8, constitution VII)
-- [ ] T012 [P] Web app shell in `web/src/app/`: router (landing/auth/monitor/dashboard), providers, root `dir="rtl"`, error boundary
+- [X] T006 Define all six Prisma models + generate migration in `api/prisma/schema.prisma` + `api/prisma/migrations/`, per data-model.md constraints verbatim: **User** (email citext "unique, valid format, ≤254 chars"; username "unique, 3–32 chars, `[a-z0-9_]+`"; passwordHash "never exposed via API"; tier enum `FREE|PRO` default `FREE`), **Baseline** (landmarks "33×{x,y,z,score} — numbers only; score ∈ [0,1]"; "current baseline = latest per user"), **MonitoringSession** (status enum `ACTIVE|COMPLETED|QUOTA_EXHAUSTED`; durationSec "≥0"; postureScore "0–100"; baselineId FK), **PostureAlert** (clientKey "uuid unique — idempotency key"; category enum `NECK|SHOULDER|SLOUCH`; landmarksSnapshot "numbers only"; verdict enum `UNCONFIRMED|REAL|FALSE` default `UNCONFIRMED`), **AuthSession** ("token hash stored, raw id rides in the `sid` cookie"; "sliding expiry, absolute cap"), **PushSubscription** (endpoint unique, p256dh, auth); indexes per data-model.md: `MonitoringSession(userId, startedAt)`, `Alert(sessionId)`, `Alert(userId)`, `Alert(clientKey)` unique, `AuthSession(userId)`, `PushSubscription(userId)`
+- [X] T007 [P] Zod validation schemas for all API payloads in `api/src/lib/validation.ts` per data-model.md trust-boundary rules: landmarks arrays "of finite numbers only", "0 ≤ durationSec ≤ elapsed wall time + 5%", "0 ≤ postureScore ≤ 100", verdict/category enums, email/username/password rules
+- [X] T008 [P] Express app shell in `api/src/app.ts` + `api/src/lib/errors.ts`: error envelope `{"error": {"code", "message"}}` per contracts/api.md, zod error mapping, 404/500 handlers, helmet security headers, JSON body limit, ops `/healthz`
+- [X] T009 [P] Env config loader `api/src/lib/config.ts`: DATABASE_URL, SESSION_SECRET, VAPID keys, `FREE_MONTHLY_SECONDS` (default 43200 = 12h), fail-fast on missing/invalid values
+- [X] T010 [P] Typed API client `web/src/lib/api.ts`: fetch wrapper with credentials, error-envelope parsing to code enum, TS types mirroring contracts/api.md
+- [X] T011 [P] Design-system foundation in `web/src/design/`: CSS custom-property tokens (owl-themed night-indigo + amber palette, Vazirmatn font stack), RTL logical-property primitives, Persian numeral helper, `prefers-reduced-motion` gate utility, owl mascot SVG (plan.md §8, constitution VII)
+- [X] T012 [P] Web app shell in `web/src/app/`: router (landing/auth/monitor/dashboard), providers, root `dir="rtl"`, error boundary
 
 **Checkpoint**: Foundation ready — user story implementation can now begin
 

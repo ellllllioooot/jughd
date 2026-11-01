@@ -1,0 +1,118 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Constitution I: no column ever holds image/video data — numbers and text only.
+
+enum Tier {
+  FREE
+  PRO
+}
+
+enum SessionStatus {
+  ACTIVE
+  COMPLETED
+  QUOTA_EXHAUSTED
+}
+
+enum AlertCategory {
+  NECK
+  SHOULDER
+  SLOUCH
+}
+
+enum AlertVerdict {
+  UNCONFIRMED
+  REAL
+  FALSE
+}
+
+model User {
+  id           String   @id @default(uuid()) @db.Uuid
+  email        String   @unique @db.VarChar(254)
+  username     String   @unique @db.VarChar(32)
+  passwordHash String
+  tier         Tier     @default(FREE)
+  createdAt    DateTime @default(now()) @db.Timestamptz(3)
+
+  baselines    Baseline[]
+  sessions     MonitoringSession[]
+  alerts       PostureAlert[]
+  authSessions AuthSession[]
+  pushSubs     PushSubscription[]
+}
+
+model Baseline {
+  id         String   @id @default(uuid()) @db.Uuid
+  userId     String   @db.Uuid
+  user       User     @relation(fields: [userId], references: [id])
+  landmarks  Json // 33×{x,y,z,score} — numbers only; score ∈ [0,1]
+  torsoScale Float
+  createdAt  DateTime @default(now()) @db.Timestamptz(3) // current baseline = latest per user
+
+  sessions MonitoringSession[]
+
+  @@index([userId])
+}
+
+model MonitoringSession {
+  id           String        @id @default(uuid()) @db.Uuid
+  userId       String        @db.Uuid
+  user         User          @relation(fields: [userId], references: [id])
+  startedAt    DateTime      @default(now()) @db.Timestamptz(3)
+  endedAt      DateTime?     @db.Timestamptz(3)
+  durationSec  Int           @default(0) // ≥0; monitored (non-paused) seconds
+  alertCount   Int           @default(0)
+  postureScore Float         @default(100) // 0–100
+  status       SessionStatus @default(ACTIVE)
+  baselineId   String        @db.Uuid
+  baseline     Baseline      @relation(fields: [baselineId], references: [id])
+  alerts       PostureAlert[]
+
+  @@index([userId, startedAt])
+}
+
+model PostureAlert {
+  id                 String        @id @default(uuid()) @db.Uuid
+  clientKey          String        @unique @db.Uuid // idempotency key from client outbox
+  sessionId          String        @db.Uuid
+  session            MonitoringSession @relation(fields: [sessionId], references: [id])
+  userId             String        @db.Uuid
+  user               User          @relation(fields: [userId], references: [id])
+  category           AlertCategory
+  occurredAt         DateTime      @db.Timestamptz(3)
+  landmarksSnapshot  Json // 33×{x,y,z,score} at alert time — numbers only
+  verdict            AlertVerdict  @default(UNCONFIRMED)
+  verdictAt          DateTime?     @db.Timestamptz(3)
+
+  @@index([sessionId])
+  @@index([userId])
+}
+
+model AuthSession {
+  id           String   @id @default(uuid()) @db.Uuid
+  tokenHash    String   @unique // sha256 of the raw token half of the `sid` cookie
+  userId       String   @db.Uuid
+  user         User     @relation(fields: [userId], references: [id])
+  expiresAt    DateTime @db.Timestamptz(3) // sliding expiry, absolute cap
+  createdAt    DateTime @default(now()) @db.Timestamptz(3)
+
+  @@index([userId])
+}
+
+model PushSubscription {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @db.Uuid
+  user      User     @relation(fields: [userId], references: [id])
+  endpoint  String   @unique
+  p256dh    String
+  auth      String
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+
+  @@index([userId])
+}
