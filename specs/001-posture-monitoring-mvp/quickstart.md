@@ -35,7 +35,7 @@ Each scenario maps to a spec acceptance path; run in order on a fresh account.
 | V3 | Alert with reason | Lean into forward-head posture for >3s | Alert naming **neck** within 2s of sustained deviation; repeats only after recovery/cooldown (SC-002, SC-003, FR-006) |
 | V4 | Background tab | Hide the tab, slouch for >3s | Browser notification appears with reason; no missed alert >2s after sustain (US-2, SC-002) |
 | V5 | Verdict labeling | Mark one alert real, one false; kill network, mark a third, reconnect | All verdicts + landmark snapshots persisted; queued verdict delivered after reconnect, none lost (US-3, FR-007) |
-| V6 | History & dashboard | End session; open dashboard | Session row: duration, alert count, accuracy; detail lists alerts; score trend renders; classifier accuracy shows share-real + sample size (US-4, US-5) |
+| V6 | History & dashboard | End session; open dashboard | Session row: duration, alert count, posture score; detail lists alerts; posture-score trend renders; classifier accuracy shows share-real + sample size (US-4, US-5) |
 | V7 | Wellness content | Run a session past 20 min; view tips/exercises | Eye-break reminder at interval with cited rationale; exercises prioritized to alert categories; every item shows a source (SC-007, FR-012/013) |
 | V8 | Quota & upgrade | Check quota meter; drive usage to the 12h cap | Meter counts monitored time; at zero, new session blocked with upgrade prompt showing paid tiers; no payment flow anywhere (US-6, SC-005) |
 | V9 | Landing stats | Sign out; open landing page | Live anonymized totals render and move as sessions complete elsewhere (US-7, FR-015) |
