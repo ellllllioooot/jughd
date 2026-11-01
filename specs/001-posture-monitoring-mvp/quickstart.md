@@ -62,3 +62,37 @@ docker compose exec api npx prisma migrate deploy
 
 Caddy terminates TLS automatically (webcam requires HTTPS). Verify V1–V10 once
 against the deployed URL; check `GET /api/v1/stats/global` responds publicly.
+
+## Validation Results (2026-11-01, T055–T056)
+
+Prod stack verified locally: `docker compose --profile prod up -d --build`
+(db + api + web/nginx + caddy), `prisma migrate deploy` applied
+`20261101175203_init`, and the TLS smoke passed — `https://localhost/` 200,
+`/api/v1/stats/global` public JSON, `/dashboard` SPA fallback 200, port 80
+redirects 308 → https, protected routes 401. Automated suites: api 37/37,
+web 26/26.
+
+V1–V10 run against the deployed URL (`https://localhost`). Server-side
+scenarios executed live over HTTPS; webcam/human scenarios validated by unit
+tests and left for a device pass as noted.
+
+| # | Result | Evidence |
+|---|--------|----------|
+| V1 | PASS (live) | register 201, duplicate email/username 409, logout 204, wrong password 401 `INVALID_CREDENTIALS`, login 200 — over HTTPS with cookie sessions |
+| V2 | PASS (API) / manual (camera) | baseline + session created live; the webcam grant + physical calibration is device-manual (covered by `geometry.test.ts` calibration math) |
+| V3 | manual (camera) | physical forward-head >3 s needs a human + webcam; the alert state machine (sustain 3 s, hysteresis 0.7·θ, cooldown 60 s, reason copy) is fully covered by `web/tests/geometry.test.ts` (18 tests) |
+| V4 | manual (camera + notifications) | hidden-tab slouch needs a device; SW notification path + background-delayed hint implemented (T027–T028), keepalive exemption covered by construction |
+| V5 | PASS (live) | alert persisted 200 `{stored, ids}`; replay returns `stored: 0` + same id (idempotent); verdict REAL 200; conflicting verdict 409 `ALREADY_VERIFIED`; 33-landmark snapshot persisted; offline queue + backoff covered by `alerts.test.ts` |
+| V6 | PASS (live) | session end 200; history list row (duration, alert count, score); detail lists alert + verdict + snapshot; dashboard summary: trend `[{date, 85}]`, accuracy `{real:1, confirmed:1, rate:1}` |
+| V7 | PASS (unit) / manual (20-min run) | tips/exercises/eye-break all cited (`content.test.ts`); ranking by alert mix unit-tested; the 20-minute reminder itself needs a real 20-min session on a device |
+| V8 | PASS (live + tests) | quota `{used, 43200, exhausted:false}` agrees with the session row (wall-time clamp verified: reported duration is clamped to elapsed, SC-005); gate-at-zero 402 + PRO tier 10× covered by `quota.test.ts`; tier cards + disabled upgrade (no payment) in UI |
+| V9 | PASS (live) | public totals moved exactly +1 user / +1 session / +1 alert after a session completed across a 60 s cache lapse (`{6,5,0,2} → {7,6,0,3}`) |
+| V10 | PASS (live + tests) | base64 `blob` field and string coordinates rejected 400 on baselines and alert snapshots during the live run; schema has zero binary columns (`privacy.test.ts`) |
+
+One bug found by the live run and fixed: malformed alert ids (`/alerts/not-a-uuid/verdict`)
+returned 500; Prisma validation errors now map to 400 `VALIDATION_ERROR`
+(`api/src/lib/errors.ts`, regression test in `alerts.test.ts`).
+
+Known device-manual remainder: V2–V4 camera paths, V4 notification display,
+and V7's real-time 20-minute eye-break tick — run once on a laptop with a
+webcam before release.

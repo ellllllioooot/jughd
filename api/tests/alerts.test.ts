@@ -138,4 +138,14 @@ describe("alerts & verdicts (contracts/api.md, FR-007/FR-017)", () => {
     expect(res.status).toBe(400);
     expect(res.body.error.code).toBe("VALIDATION_ERROR");
   });
+
+  it("answers malformed alert ids with 4xx, not 500 (T056 finding)", async () => {
+    const agent = newAgent();
+    await registerUser(agent);
+    const res = await agent
+      .patch("/api/v1/alerts/not-a-uuid/verdict")
+      .send({ verdict: "REAL" });
+    expect(res.status).toBe(400);
+    expect(res.body.error.code).toBe("VALIDATION_ERROR");
+  });
 });
