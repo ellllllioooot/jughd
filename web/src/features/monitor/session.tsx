@@ -1,17 +1,18 @@
 import type { AlertCategory } from "../../lib/api";
 import { CATEGORY_FA } from "../../lib/messages";
 import { fa, faDuration } from "../../design/persian";
-import type { AlertEvent } from "../../engine/alert-manager";
 import type { PostureState } from "../../engine/alert-manager";
 import type { Category } from "../../engine/thresholds";
+import { FeedbackList, type FeedbackAlert } from "./feedback";
 
 interface Props {
   posture: { state: PostureState; category: Category | null };
-  alerts: AlertEvent[];
+  alerts: FeedbackAlert[];
   monitoredSec: number;
   soundOn: boolean;
   onToggleSound: () => void;
   onEnd: () => void;
+  onVerdict: (clientKey: string, verdict: "REAL" | "FALSE") => void;
   backgroundDelayed: boolean;
 }
 
@@ -29,6 +30,7 @@ export function SessionPanel({
   soundOn,
   onToggleSound,
   onEnd,
+  onVerdict,
   backgroundDelayed,
 }: Props) {
   return (
@@ -65,19 +67,7 @@ export function SessionPanel({
 
       <div className="card stack">
         <h2>هشدارهای این جلسه ({fa(alerts.length)})</h2>
-        {alerts.length === 0 && <p>هنوز هشداری ثبت نشده است.</p>}
-        <ul className="stack" style={{ listStyle: "none", padding: 0 }}>
-          {alerts.map((a) => (
-            <li key={a.id} className="row" style={{ justifyContent: "space-between" }}>
-              <span>
-                {CATEGORY_FA[a.category as AlertCategory]} — {a.reason}
-              </span>
-              <span style={{ color: "var(--color-ink-muted)", fontSize: "var(--text-sm)" }}>
-                {new Date(a.occurredAt).toLocaleTimeString("fa-IR")}
-              </span>
-            </li>
-          ))}
-        </ul>
+        <FeedbackList alerts={alerts} onVerdict={onVerdict} />
       </div>
     </section>
   );

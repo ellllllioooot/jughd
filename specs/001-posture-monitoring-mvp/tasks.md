@@ -112,11 +112,11 @@ persisted, unconfirmed alerts stored at session end.
 
 ### Implementation for User Story 3
 
-- [ ] T031 [US3] Feedback endpoints `api/src/routes/alerts.ts` + `api/src/services/feedback-service.ts`: `POST /sessions/:id/alerts` idempotent batch upsert keyed on unique `clientKey`, `PATCH /alerts/:id/verdict` with 409 `ALREADY_VERIFIED` on conflicting repeat (contracts/api.md; depends: T019)
-- [ ] T032 [P] [US3] Feedback API tests `api/tests/alerts.test.ts`: idempotent replay returns same ids, terminal verdict transitions, owner isolation, `landmarksSnapshot` rejected unless finite numbers (privacy invariant)
-- [ ] T033 [P] [US3] Client outbox `web/src/lib/outbox.ts`: localStorage queue keyed by client-generated UUIDs, flush on interval + session end + `online` event, exponential backoff (research.md §10)
-- [ ] T034 [P] [US3] Feedback UI `web/src/features/monitor/feedback.tsx`: real/false buttons on alert cards, verdict state display, unconfirmed alerts visible
-- [ ] T035 [US3] Pipeline wiring `web/src/features/monitor/`: engine alert events → outbox → `POST /sessions/:id/alerts`; verdict → `PATCH /alerts/:id/verdict` (depends: T031, T033, T034)
+- [X] T031 [US3] Feedback endpoints `api/src/routes/alerts.ts` + `api/src/services/feedback-service.ts`: `POST /sessions/:id/alerts` idempotent batch upsert keyed on unique `clientKey`, `PATCH /alerts/:id/verdict` with 409 `ALREADY_VERIFIED` on conflicting repeat (contracts/api.md; depends: T019)
+- [X] T032 [P] [US3] Feedback API tests `api/tests/alerts.test.ts`: idempotent replay returns same ids, terminal verdict transitions, owner isolation, `landmarksSnapshot` rejected unless finite numbers (privacy invariant)
+- [X] T033 [P] [US3] Client outbox `web/src/lib/outbox.ts`: localStorage queue keyed by client-generated UUIDs, flush on interval + session end + `online` event, exponential backoff (research.md §10)
+- [X] T034 [P] [US3] Feedback UI `web/src/features/monitor/feedback.tsx`: real/false buttons on alert cards, verdict state display, unconfirmed alerts visible
+- [X] T035 [US3] Pipeline wiring `web/src/features/monitor/`: engine alert events → outbox → `POST /sessions/:id/alerts`; verdict → `PATCH /alerts/:id/verdict` (depends: T031, T033, T034)
 
 **Checkpoint**: quickstart V5 passes — labeled dataset flows end-to-end
 

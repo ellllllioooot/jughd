@@ -8,9 +8,11 @@ import { toPersianError } from "../../lib/errors";
 import { browserSupported, notifyUser, setSoundEnabled, soundEnabled, unlockAudio } from "../../lib/notify";
 import { startKeepalive, stopKeepalive } from "../../lib/keepalive";
 import { finalizeSession } from "../../lib/session-finalize";
+import { enqueue, flush, startOutbox, stopOutbox } from "../../lib/outbox";
 import { fa, faDuration } from "../../design/persian";
 import { CalibrationPanel } from "./calibration";
 import { SessionPanel } from "./session";
+import type { FeedbackAlert } from "./feedback";
 
 type Phase = "idle" | "calibrating" | "running" | "ended";
 
@@ -34,14 +36,16 @@ export default function MonitorPage() {
     state: "paused",
     category: null,
   });
-  const [alerts, setAlerts] = useState<AlertEvent[]>([]);
+  const [alerts, setAlerts] = useState<FeedbackAlert[]>([]);
   const [monitoredSec, setMonitoredSec] = useState(0);
   const [soundOn, setSoundOn] = useState(soundEnabled);
   const [session, setSession] = useState<Session | null>(null);
   const [quotaWarning, setQuotaWarning] = useState<string | null>(null);
   const [backgroundDelayed, setBackgroundDelayed] = useState(false);
-  const alertsRef = useRef<AlertEvent[]>([]);
+  const alertsRef = useRef<FeedbackAlert[]>([]);
   alertsRef.current = alerts;
+  const sessionRef = useRef<Session | null>(null);
+  sessionRef.current = session;
 
   // overlay drawing of detected landmarks (camera preview + landmarks, T024)
   const drawOverlay = useCallback((landmarks: { x: number; y: number; score: number }[] | null) => {
@@ -66,6 +70,7 @@ export default function MonitorPage() {
   const endSession = useCallback(() => {
     const engine = engineRef.current;
     if (!engine || !session) return;
+    void flush(); // queued alerts/verdicts first (FR-007)
     const stats = engine.getStats();
     const summary = {
       endedAt: new Date().toISOString(),
@@ -76,6 +81,7 @@ export default function MonitorPage() {
     finalizeSession(session.id, summary);
     setPhase("ended");
     stopKeepalive();
+    stopOutbox();
     window.removeEventListener("beforeunload", finalizeHandler.current);
   }, [session]);
 
@@ -109,10 +115,24 @@ export default function MonitorPage() {
         setPosture({ state: "deviation", category });
       });
       engine.addEventListener("background-delayed", () => setBackgroundDelayed(true));
-      // alert delivery integration (T027): SW notification + optional sound
+      // alert delivery (T027) + labeled-data pipeline (T035): SW notification,
+      // optional sound, and an outbox record keyed by the client UUID
       engine.addEventListener("alert", (e) => {
         const alert = (e as CustomEvent).detail as AlertEvent;
-        setAlerts((prev) => [...prev, alert]);
+        setAlerts((prev) => [...prev, { ...alert, verdict: "UNCONFIRMED" }]);
+        const sid = sessionRef.current?.id;
+        if (sid) {
+          enqueue({
+            type: "alert",
+            sessionId: sid,
+            alert: {
+              clientKey: alert.id,
+              category: alert.category,
+              occurredAt: new Date(alert.occurredAt).toISOString(),
+              landmarksSnapshot: alert.snapshot,
+            },
+          });
+        }
         void notifyUser({
           title: "جغد — هشدار وضعیت بدن",
           body: alert.reason,
@@ -160,8 +180,10 @@ export default function MonitorPage() {
       setSession(created);
       setPhase("running");
       startKeepalive(); // background-tab timer exemption (research §4)
+      startOutbox(); // periodic + online flush of queued feedback (research §10)
 
       finalizeHandler.current = () => {
+        void flush();
         const stats = engine.getStats();
         finalizeSession(created.id, {
           endedAt: new Date().toISOString(),
@@ -192,6 +214,7 @@ export default function MonitorPage() {
     return () => {
       engineRef.current?.stop();
       stopKeepalive();
+      stopOutbox();
       const video = videoRef.current;
       const stream = video?.srcObject as MediaStream | null;
       stream?.getTracks().forEach((t) => t.stop());
@@ -265,6 +288,13 @@ export default function MonitorPage() {
                   setSoundEnabled(next);
                 }}
                 onEnd={endSession}
+                onVerdict={(clientKey, verdict) => {
+                  setAlerts((prev) =>
+                    prev.map((a) => (a.id === clientKey ? { ...a, verdict } : a))
+                  );
+                  enqueue({ type: "verdict", clientKey, verdict });
+                  void flush();
+                }}
                 backgroundDelayed={backgroundDelayed}
               />
             </>
