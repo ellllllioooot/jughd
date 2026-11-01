@@ -35,6 +35,25 @@ re-alerts only after recovery or `T_cooldown` (60s) — satisfying FR-006.
 All thresholds live in one tunable config, computed per-user from baseline
 variance captured during calibration.
 
+**Scientific basis (Constitution III)**: Deviation thresholds are
+health-related and each signal family carries its citation:
+
+- **Neck (forward-head angle)** — Hansraj KK, "Assessment of Stresses in the
+  Cervical Spine Caused by Posture and Position of the Head," *Surg Technol
+  Int.* 2014;25:277–279: cervical spine load rises steeply with sustained
+  head-forward flexion (≈27 lb at 15°, ≈60 lb at 60°). The alert boundary is
+  set relative to each user's calibrated baseline flexion, inside the range
+  where load elevation is documented.
+- **Shoulders and slouch (trunk/shoulder posture)** — NIOSH ergonomics
+  guidance, DHHS (NIOSH) Publication No. 97-141, *Musculoskeletal Disorders
+  and Workplace Factors* (1997): sustained awkward shoulder and trunk postures
+  are established MSD risk factors; the alert boundary targets return toward
+  the neutral calibrated posture.
+
+Every threshold config entry MUST record its source id (hansraj-2014 or
+niosh-97-141); the citation test in web/tests/content.test.ts verifies this
+(tasks T041).
+
 **Rationale**: Scale/depth-invariant (normalizing by shoulder–hip distance),
 explainable (each alert names its geometric reason — SC-003), tunable per user,
 and needs no training data. Hysteresis + sustain + cooldown prevents alert
