@@ -49,21 +49,21 @@ video bytes.** Contract tests assert this on every route.
 | Method & Path | Request | Response | Notes |
 |---------------|---------|----------|-------|
 | `POST /sessions` | `{baselineId}` | `201 {session}` | quota enforced; `402`-style `QUOTA_EXHAUSTED` code when blocked |
-| `PATCH /sessions/:id/end` | `{endedAt, durationSec, accuracyScore, alertCount}` | `200 {session}` | server clamps values (data-model rules); sets `COMPLETED` or `QUOTA_EXHAUSTED` |
+| `PATCH /sessions/:id/end` | `{endedAt, durationSec, postureScore, alertCount}` | `200 {session}` | server clamps values (data-model rules); sets `COMPLETED` or `QUOTA_EXHAUSTED` |
 | `POST /sessions/:id/alerts` | `{alerts: [{clientKey, category, occurredAt, landmarksSnapshot}]}` | `200 {stored: n, ids: {clientKey: id}}` | idempotent batch upsert (outbox flush) |
 | `PATCH /alerts/:id/verdict` | `{verdict: "REAL" \| "FALSE"}` | `200 {alert}` | terminal; `409 ALREADY_VERIFIED` if repeated with different verdict |
 | `GET /sessions?cursor&limit` | — | `200 {items: [{session}], nextCursor}` | newest first |
 | `GET /sessions/:id` | — | `200 {session, alerts: [{alert}]}` | owner-only (404 otherwise) |
 
 `session` = `{id, baselineId, startedAt, endedAt, durationSec, alertCount,
-accuracyScore, status}`. `alert` = `{id, clientKey, category, occurredAt,
+postureScore, status}`. `alert` = `{id, clientKey, category, occurredAt,
 landmarksSnapshot, verdict, verdictAt}`.
 
 ### Dashboard
 
 | Method & Path | Request | Response | Notes |
 |---------------|---------|----------|-------|
-| `GET /dashboard/summary` | — | `200 {scoreTrend: [{date, score}], alertAccuracy: {real, confirmed, rate}, recentSessions: [{session}]}` | trend = daily avg accuracy; `rate` null when `confirmed = 0` |
+| `GET /dashboard/summary` | — | `200 {postureScoreTrend: [{date, postureScore}], alertAccuracy: {real, confirmed, rate}, recentSessions: [{session}]}` | trend = daily avg posture score; `rate` null when `confirmed = 0` |
 
 Tips, exercises, and eye-break content ship in the web client
 (`web/src/content/`) — no endpoints (research.md §12).
