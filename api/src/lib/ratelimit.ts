@@ -21,3 +21,8 @@ export function rateLimitHeaders(key: string): Record<string, string> {
   const entry = hits.get(key);
   return entry ? { "X-RateLimit-Remaining": String(Math.max(0, 5 - entry.count)) } : {};
 }
+
+/** Test-only: clear all counters. */
+export function resetRateLimits() {
+  hits.clear();
+}

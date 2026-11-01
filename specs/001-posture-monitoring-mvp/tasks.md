@@ -60,12 +60,12 @@ wrong credentials show a generic error.
 
 ### Implementation for User Story 1
 
-- [ ] T013 [P] [US1] Password hashing/verification with `node:crypto` scrypt (N=2^15, r=8, p=1, 16-byte salt, params stored with hash) in `api/src/lib/password.ts` + unit test `api/tests/password.test.ts` (constitution II: no native addons)
-- [ ] T014 [P] [US1] Auth session service `api/src/services/auth-service.ts` + `requireAuth` middleware `api/src/lib/session.ts`: create/revoke/verify AuthSession rows; `sid` cookie (httpOnly, SameSite=Lax, Secure in prod); "sliding expiry, absolute cap"
-- [ ] T015 [US1] Auth routes `api/src/routes/auth.ts` per contracts/api.md: `POST /auth/register` → 201 `{user}`, 409 `EMAIL_TAKEN`/`USERNAME_TAKEN`; `POST /auth/login` → 200, 401 `INVALID_CREDENTIALS` (generic), rate-limited per IP + account; `POST /auth/logout` → 204; `GET /auth/me` → 200 `{user, quota}` (depends: T013, T014)
-- [ ] T016 [P] [US1] Contract tests `api/tests/auth.test.ts`: register/login/logout/me, duplicate conflicts, generic 401, rate limit, responses never contain `passwordHash` ("never exposed via API"), cookie flags
-- [ ] T017 [P] [US1] Register + login pages `web/src/features/auth/`: Persian RTL forms, inline validation, error-code → Persian messages (built against contracts/api.md)
-- [ ] T018 [US1] Auth state bootstrap `web/src/features/auth/auth-context.tsx` + protected-route wrapper in `web/src/app/`: `GET /auth/me` on load, redirect unauthenticated users, sign-out action (depends: T015, T017)
+- [X] T013 [P] [US1] Password hashing/verification with `node:crypto` scrypt (N=2^15, r=8, p=1, 16-byte salt, params stored with hash) in `api/src/lib/password.ts` + unit test `api/tests/password.test.ts` (constitution II: no native addons)
+- [X] T014 [P] [US1] Auth session service `api/src/services/auth-service.ts` + `requireAuth` middleware `api/src/lib/session.ts`: create/revoke/verify AuthSession rows; `sid` cookie (httpOnly, SameSite=Lax, Secure in prod); "sliding expiry, absolute cap"
+- [X] T015 [US1] Auth routes `api/src/routes/auth.ts` per contracts/api.md: `POST /auth/register` → 201 `{user}`, 409 `EMAIL_TAKEN`/`USERNAME_TAKEN`; `POST /auth/login` → 200, 401 `INVALID_CREDENTIALS` (generic), rate-limited per IP + account; `POST /auth/logout` → 204; `GET /auth/me` → 200 `{user, quota}` (depends: T013, T014)
+- [X] T016 [P] [US1] Contract tests `api/tests/auth.test.ts`: register/login/logout/me, duplicate conflicts, generic 401, rate limit, responses never contain `passwordHash` ("never exposed via API"), cookie flags
+- [X] T017 [P] [US1] Register + login pages `web/src/features/auth/`: Persian RTL forms, inline validation, error-code → Persian messages (built against contracts/api.md)
+- [X] T018 [US1] Auth state bootstrap `web/src/features/auth/auth-context.tsx` + protected-route wrapper in `web/src/app/`: `GET /auth/me` on load, redirect unauthenticated users, sign-out action (depends: T015, T017)
 
 **Checkpoint**: quickstart V1 passes — auth story fully functional
 
