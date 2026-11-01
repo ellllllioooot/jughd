@@ -69,6 +69,7 @@ export const pushUnsubscribeSchema = z.object({
 });
 
 export const listSessionsSchema = z.object({
-  cursor: z.string().uuid().optional(),
+  // opaque base64url cursor (startedAt|id tuple) — decoded in session-query
+  cursor: z.string().min(1).max(200).optional(),
   limit: z.coerce.number().int().min(1).max(100).default(20),
 });
