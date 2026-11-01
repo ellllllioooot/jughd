@@ -173,9 +173,9 @@ data stays fully accessible.
 
 ### Implementation for User Story 6
 
-- [ ] T044 [P] [US6] Quota service `api/src/services/quota-service.ts` + routes `api/src/routes/quota.ts`: derived `SUM(durationSec)` per calendar month vs `FREE_MONTHLY_SECONDS` (12h = 43,200s), `GET /quota` per contract, gate in `POST /sessions` → code `QUOTA_EXHAUSTED`, mid-session exhaustion ends session `QUOTA_EXHAUSTED` with summary preserved (spec edge cases; depends: T019)
-- [ ] T045 [P] [US6] Quota API tests `api/tests/quota.test.ts`: month-boundary sums, gate at zero remaining, partial-month usage, tier limit config
-- [ ] T046 [US6] Quota UI `web/src/features/dashboard/quota.tsx` + monitor integration: remaining-time meter, near-limit warning (server push via T028 sender), upgrade prompt with paid tier cards ("no real payment"), `QUOTA_EXHAUSTED` session-end handling (depends: T044, T038)
+- [X] T044 [P] [US6] Quota service `api/src/services/quota-service.ts` + routes `api/src/routes/quota.ts`: derived `SUM(durationSec)` per calendar month vs `FREE_MONTHLY_SECONDS` (12h = 43,200s), `GET /quota` per contract, gate in `POST /sessions` → code `QUOTA_EXHAUSTED`, mid-session exhaustion ends session `QUOTA_EXHAUSTED` with summary preserved (spec edge cases; depends: T019)
+- [X] T045 [P] [US6] Quota API tests `api/tests/quota.test.ts`: month-boundary sums, gate at zero remaining, partial-month usage, tier limit config
+- [X] T046 [US6] Quota UI `web/src/features/dashboard/quota.tsx` + monitor integration: remaining-time meter, near-limit warning (server push via T028 sender), upgrade prompt with paid tier cards ("no real payment"), `QUOTA_EXHAUSTED` session-end handling (depends: T044, T038)
 
 **Checkpoint**: quickstart V8 passes
 

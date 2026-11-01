@@ -41,6 +41,7 @@ export default function MonitorPage() {
   const [soundOn, setSoundOn] = useState(soundEnabled);
   const [session, setSession] = useState<Session | null>(null);
   const [quotaWarning, setQuotaWarning] = useState<string | null>(null);
+  const [quotaEnded, setQuotaEnded] = useState(false);
   const [backgroundDelayed, setBackgroundDelayed] = useState(false);
   const alertsRef = useRef<FeedbackAlert[]>([]);
   alertsRef.current = alerts;
@@ -78,7 +79,12 @@ export default function MonitorPage() {
       postureScore: Math.round(stats.postureScore * 100) / 100,
       alertCount: alertsRef.current.length,
     };
-    finalizeSession(session.id, summary);
+    // capture the server verdict — the session may end QUOTA_EXHAUSTED with the
+    // summary clamped to the remaining allowance (SC-005)
+    void api
+      .endSession(session.id, summary)
+      .then(({ session: ended }) => setQuotaEnded(ended.status === "QUOTA_EXHAUSTED"))
+      .catch(() => finalizeSession(session.id, summary));
     setPhase("ended");
     stopKeepalive();
     stopOutbox();
@@ -303,6 +309,12 @@ export default function MonitorPage() {
           {phase === "ended" && session && (
             <section className="stack card">
               <h2>جلسه پایان یافت</h2>
+              {quotaEnded && (
+                <p style={{ color: "var(--color-warn)" }}>
+                  سهمیه ماهانه شما در پایان این جلسه تمام شد؛ خلاصه جلسه ذخیره شده است و تا شروع
+                  ماه بعد جلسه جدیدی آغاز نمی‌شود.
+                </p>
+              )}
               <p>
                 زمان مانیتورینگ: {faDuration(monitoredSec)} — امتیاز وضعیت:{" "}
                 {fa(Math.round(engineRef.current?.getStats().postureScore ?? 0))} از ۱۰۰

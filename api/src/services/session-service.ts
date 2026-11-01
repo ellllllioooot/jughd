@@ -75,6 +75,12 @@ export async function endSession(
       title: "جغد — سهمیه مانیتورینگ",
       body: "سهمیه مانیتورینگ ماهانه شما تمام شده است.",
     });
+  } else if (remaining - durationSec <= 1800) {
+    // near-limit warning over Web Push (best effort, T028 sender)
+    void sendPushToUser(userId, {
+      title: "جغد — سهمیه مانیتورینگ",
+      body: "کمتر از ۳۰ دقیقه از سهمیه ماهانه شما باقی مانده است.",
+    });
   }
 
   return prisma.monitoringSession.update({
