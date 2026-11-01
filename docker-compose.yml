@@ -1,0 +1,93 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: jughd
+      POSTGRES_PASSWORD: jughd
+      POSTGRES_DB: jughd
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U jughd"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  # --- dev profile: watch-mode api + Vite dev server ---
+  api-dev:
+    profiles: ["dev"]
+    image: node:22.22.1-alpine
+    working_dir: /app
+    command: sh -c "npm install && npm run dev"
+    volumes:
+      - ./api:/app
+      - api-node-modules:/app/node_modules
+    environment:
+      DATABASE_URL: postgresql://jughd:jughd@db:5432/jughd?schema=public
+      SESSION_SECRET: ${SESSION_SECRET:-dev-secret}
+      VAPID_PUBLIC_KEY: ${VAPID_PUBLIC_KEY:-}
+      VAPID_PRIVATE_KEY: ${VAPID_PRIVATE_KEY:-}
+      VAPID_SUBJECT: ${VAPID_SUBJECT:-mailto:admin@example.com}
+      FREE_MONTHLY_SECONDS: ${FREE_MONTHLY_SECONDS:-43200}
+      NODE_ENV: development
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "3000:3000"
+
+  web-dev:
+    profiles: ["dev"]
+    image: node:22.22.1-alpine
+    working_dir: /app
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0"
+    volumes:
+      - ./web:/app
+      - web-node-modules:/app/node_modules
+    depends_on:
+      - api-dev
+    ports:
+      - "5173:5173"
+
+  # --- prod profile: built api + static web behind Caddy TLS ---
+  api:
+    profiles: ["prod"]
+    build: ./api
+    environment:
+      DATABASE_URL: postgresql://jughd:jughd@db:5432/jughd?schema=public
+      SESSION_SECRET: ${SESSION_SECRET:?set SESSION_SECRET in .env}
+      VAPID_PUBLIC_KEY: ${VAPID_PUBLIC_KEY:-}
+      VAPID_PRIVATE_KEY: ${VAPID_PRIVATE_KEY:-}
+      VAPID_SUBJECT: ${VAPID_SUBJECT:-mailto:admin@example.com}
+      FREE_MONTHLY_SECONDS: ${FREE_MONTHLY_SECONDS:-43200}
+      NODE_ENV: production
+    depends_on:
+      db:
+        condition: service_healthy
+
+  web:
+    profiles: ["prod"]
+    build: ./web
+
+  caddy:
+    profiles: ["prod"]
+    image: caddy:2.10-alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    environment:
+      DOMAIN: ${DOMAIN:-localhost}
+    depends_on:
+      - api
+      - web
+
+volumes:
+  db-data:
+  api-node-modules:
+  web-node-modules:
+  caddy-data:
+  caddy-config:
