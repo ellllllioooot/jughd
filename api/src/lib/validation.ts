@@ -2,12 +2,16 @@ import { z } from "zod";
 
 // Trust boundary: landmarks are arrays of finite numbers only (privacy invariant —
 // there is no shape here that could receive pixels).
-export const landmarkSchema = z.object({
-  x: z.number().finite(),
-  y: z.number().finite(),
-  z: z.number().finite(),
-  score: z.number().finite().min(0).max(1),
-});
+// strict: unknown keys (e.g. base64/blob fields) are rejected, not stripped —
+// privacy invariant (constitution I): numbers only across the trust boundary
+export const landmarkSchema = z
+  .object({
+    x: z.number().finite(),
+    y: z.number().finite(),
+    z: z.number().finite(),
+    score: z.number().finite().min(0).max(1),
+  })
+  .strict();
 
 export const landmarksSchema = z.array(landmarkSchema).length(33);
 
@@ -34,7 +38,8 @@ export const baselineSchema = z.object({
 export const endSessionSchema = z.object({
   endedAt: z.string().datetime(),
   durationSec: z.number().int().min(0),
-  postureScore: z.number().finite().min(0).max(100),
+  // bounds are enforced by server-side clamping (contracts/api.md), not rejection
+  postureScore: z.number().finite(),
   alertCount: z.number().int().min(0),
 });
 

@@ -4,6 +4,7 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
+    "postinstall": "mkdir -p public/mediapipe-wasm && cp node_modules/@mediapipe/tasks-vision/wasm/* public/mediapipe-wasm/",
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",

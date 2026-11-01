@@ -1,4 +1,11 @@
-import type { ApiErrorCode } from "./api";
+import type { AlertCategory, ApiErrorCode } from "./api";
+
+/** Alert categories → Persian copy (SC-003: every alert names its reason). */
+export const CATEGORY_FA: Record<AlertCategory, string> = {
+  NECK: "گردن",
+  SHOULDER: "شانه‌ها",
+  SLOUCH: "نشستن قوزکرده",
+};
 
 /** Error codes → Persian copy (contracts/api.md: web client renders Persian). */
 export const ERROR_MESSAGES: Record<ApiErrorCode, string> = {
