@@ -132,9 +132,9 @@ category, time, snapshot summary, verdict.
 
 ### Implementation for User Story 4
 
-- [ ] T036 [US4] Session read endpoints in `api/src/routes/sessions.ts` + `api/src/services/session-query.ts`: `GET /sessions` (cursor pagination, newest first), `GET /sessions/:id` with alerts ("404 otherwise" for non-owner) (depends: T031)
-- [ ] T037 [P] [US4] Read API tests `api/tests/sessions-read.test.ts`: pagination cursors, detail includes alert `verdict`/`landmarksSnapshot` fields, non-owner 404
-- [ ] T038 [US4] History UI `web/src/features/dashboard/history.tsx`: session list (duration, alert count, posture score), drill-in alert cards (depends: T036, T034)
+- [X] T036 [US4] Session read endpoints in `api/src/routes/sessions.ts` + `api/src/services/session-query.ts`: `GET /sessions` (cursor pagination, newest first), `GET /sessions/:id` with alerts ("404 otherwise" for non-owner) (depends: T031)
+- [X] T037 [P] [US4] Read API tests `api/tests/sessions-read.test.ts`: pagination cursors, detail includes alert `verdict`/`landmarksSnapshot` fields, non-owner 404
+- [X] T038 [US4] History UI `web/src/features/dashboard/history.tsx`: session list (duration, alert count, posture score), drill-in alert cards (depends: T036, T034)
 
 **Checkpoint**: quickstart V6 history checks pass
 
@@ -152,11 +152,11 @@ category; every item shows a source.
 
 ### Implementation for User Story 5
 
-- [ ] T039 [P] [US5] Dashboard summary endpoint `api/src/routes/dashboard.ts` + `api/src/services/aggregate-service.ts`: `GET /dashboard/summary` — daily posture-score trend, `alertAccuracy {real, confirmed, rate}` ("rate null when confirmed = 0"), recentSessions (contracts/api.md)
-- [ ] T040 [P] [US5] Summary API tests `api/tests/dashboard.test.ts`: day bucketing, rate math including the null case, user isolation
-- [ ] T041 [P] [US5] Wellness content `web/src/content/`: tips + exercises per category (NECK/SHOULDER/SLOUCH/GENERAL) + eye-break rule (20-20-20 at 20-min intervals), every record carrying REQUIRED `citation {source, reference, url}` (constitution III) + completeness test `web/tests/content.test.ts` extended with threshold citation verification — every posture-threshold config entry cites its source (Hansraj 2014 / NIOSH per research.md §2)
-- [ ] T042 [US5] Eye-break scheduler `web/src/features/monitor/eye-break.tsx`: 20-min continuous-session timer, cited rationale in the reminder, dismiss/snooze (depends: T024, T041)
-- [ ] T043 [US5] Insights UI `web/src/features/dashboard/insights.tsx`: posture-score trend chart, classifier accuracy with sample size, tips + exercises ranked by the user's alert-category mix (depends: T039, T041, T038)
+- [X] T039 [P] [US5] Dashboard summary endpoint `api/src/routes/dashboard.ts` + `api/src/services/aggregate-service.ts`: `GET /dashboard/summary` — daily posture-score trend, `alertAccuracy {real, confirmed, rate}` ("rate null when confirmed = 0"), recentSessions (contracts/api.md)
+- [X] T040 [P] [US5] Summary API tests `api/tests/dashboard.test.ts`: day bucketing, rate math including the null case, user isolation
+- [X] T041 [P] [US5] Wellness content `web/src/content/`: tips + exercises per category (NECK/SHOULDER/SLOUCH/GENERAL) + eye-break rule (20-20-20 at 20-min intervals), every record carrying REQUIRED `citation {source, reference, url}` (constitution III) + completeness test `web/tests/content.test.ts` extended with threshold citation verification — every posture-threshold config entry cites its source (Hansraj 2014 / NIOSH per research.md §2)
+- [X] T042 [US5] Eye-break scheduler `web/src/features/monitor/eye-break.tsx`: 20-min continuous-session timer, cited rationale in the reminder, dismiss/snooze (depends: T024, T041)
+- [X] T043 [US5] Insights UI `web/src/features/dashboard/insights.tsx`: posture-score trend chart, classifier accuracy with sample size, tips + exercises ranked by the user's alert-category mix (depends: T039, T041, T038)
 
 **Checkpoint**: quickstart V6–V7 dashboard checks pass
 

@@ -4,6 +4,7 @@ import { fa, faDuration } from "../../design/persian";
 import type { PostureState } from "../../engine/alert-manager";
 import type { Category } from "../../engine/thresholds";
 import { FeedbackList, type FeedbackAlert } from "./feedback";
+import { EyeBreakReminder } from "./eye-break";
 
 interface Props {
   posture: { state: PostureState; category: Category | null };
@@ -64,6 +65,8 @@ export function SessionPanel({
           </button>
         </div>
       </div>
+
+      <EyeBreakReminder monitoredSec={monitoredSec} />
 
       <div className="card stack">
         <h2>هشدارهای این جلسه ({fa(alerts.length)})</h2>

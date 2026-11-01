@@ -15,6 +15,9 @@
   --color-ok: #4cd4a0;
   --color-warn: #f5b942;
   --color-danger: #ff7b72;
+  /* chart series — validated for lightness/chroma/contrast on --color-surface
+     (dataviz six checks, dark mode: #c08529 passes, #f5b942 is outside the band) */
+  --color-chart-1: #c08529;
 
   /* Vazirmatn typography */
   --font-sans: "Vazirmatn", "Tahoma", "Segoe UI", sans-serif;
