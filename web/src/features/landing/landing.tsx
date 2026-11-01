@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Owl } from "../../design/owl";
+import { LiveStats } from "./stats";
 
 export default function LandingPage() {
   return (
@@ -18,6 +19,29 @@ export default function LandingPage() {
           ورود
         </Link>
       </div>
+
+      <div className="row" style={{ flexWrap: "wrap", textAlign: "start" }}>
+        <div className="card" style={{ flex: "1 1 200px" }}>
+          <strong>حریم خصوصی پیش‌فرض</strong>
+          <p style={{ margin: 0 }}>
+            هیچ تصویری از مرورگر شما خارج نمی‌شود؛ فقط برآیندهای عددی برای هشدار و گزارش ثبت می‌شود.
+          </p>
+        </div>
+        <div className="card" style={{ flex: "1 1 200px" }}>
+          <strong>هشدارهای مستند</strong>
+          <p style={{ margin: 0 }}>
+            آستانه‌ها و نکته‌های سلامتی بر پایه منابع معتبر و با ذکر مأخذ ارائه می‌شوند.
+          </p>
+        </div>
+        <div className="card" style={{ flex: "1 1 200px" }}>
+          <strong>۱۲ ساعت رایگان در ماه</strong>
+          <p style={{ margin: 0 }}>
+            بدون نیاز به پرداخت شروع کنید؛ در صورت نیاز بیشتر، طرح حرفه‌ای در دسترس است.
+          </p>
+        </div>
+      </div>
+
+      <LiveStats />
     </main>
   );
 }

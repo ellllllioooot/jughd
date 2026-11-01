@@ -44,6 +44,11 @@ export async function dashboardSummary(userId: string) {
 
 let globalCache: { at: number; data: GlobalStats } | null = null;
 
+/** test hook — the 60s cache is module state (T047) */
+export function resetGlobalStatsCache() {
+  globalCache = null;
+}
+
 export interface GlobalStats {
   users: number;
   sessions: number;

@@ -191,9 +191,9 @@ move as sessions complete elsewhere; no individual data visible.
 
 ### Implementation for User Story 7
 
-- [ ] T047 [P] [US7] Global stats endpoint `api/src/routes/stats.ts` (+ aggregate reuse in `api/src/services/aggregate-service.ts`): `GET /stats/global` → `{users, sessions, monitoredHours, alerts}`, "anonymized totals only", 60s in-memory cache + tests `api/tests/stats.test.ts` (depends: T006)
-- [ ] T048 [P] [US7] Landing page `web/src/features/landing/`: owl-branded hero, marketing pitch in Persian, register CTA, built against contracts/api.md
-- [ ] T049 [US7] Landing stats wiring `web/src/features/landing/stats.tsx`: poll `GET /stats/global`, Persian numeral formatting, live refresh (depends: T047, T048)
+- [X] T047 [P] [US7] Global stats endpoint `api/src/routes/stats.ts` (+ aggregate reuse in `api/src/services/aggregate-service.ts`): `GET /stats/global` → `{users, sessions, monitoredHours, alerts}`, "anonymized totals only", 60s in-memory cache + tests `api/tests/stats.test.ts` (depends: T006)
+- [X] T048 [P] [US7] Landing page `web/src/features/landing/`: owl-branded hero, marketing pitch in Persian, register CTA, built against contracts/api.md
+- [X] T049 [US7] Landing stats wiring `web/src/features/landing/stats.tsx`: poll `GET /stats/global`, Persian numeral formatting, live refresh (depends: T047, T048)
 
 **Checkpoint**: quickstart V9 passes
 
