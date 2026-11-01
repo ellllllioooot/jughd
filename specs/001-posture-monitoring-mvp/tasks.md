@@ -203,11 +203,11 @@ move as sessions complete elsewhere; no individual data visible.
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T050 [P] Accessibility + RTL polish pass `web/src/`: keyboard navigation, focus states, contrast, `prefers-reduced-motion` verification across all pages (constitution VII)
-- [ ] T051 [P] Persian copy review `web/src/`: all user-facing strings Persian with Persian numerals; every error code from contracts/api.md mapped to Persian messages
-- [ ] T052 [P] Privacy invariant audit `api/tests/privacy.test.ts` + `api/prisma/schema.prisma`: every route rejects non-numeric landmark payloads; assert zero binary/blob columns exist (constitution I gate, SC-008)
-- [ ] T053 [P] Performance pass `web/src/engine/` + `web/`: detection loop profiling (20 fps cap, worker isolation), bundle analysis, route-level code splitting for landing/dashboard
-- [ ] T054 [P] Documentation `README.md` + `docs/architecture.md`: setup/dev/deploy, data flow including the landmark-only path, citations appendix for wellness content (constitution VI)
+- [X] T050 [P] Accessibility + RTL polish pass `web/src/`: keyboard navigation, focus states, contrast, `prefers-reduced-motion` verification across all pages (constitution VII)
+- [X] T051 [P] Persian copy review `web/src/`: all user-facing strings Persian with Persian numerals; every error code from contracts/api.md mapped to Persian messages
+- [X] T052 [P] Privacy invariant audit `api/tests/privacy.test.ts` + `api/prisma/schema.prisma`: every route rejects non-numeric landmark payloads; assert zero binary/blob columns exist (constitution I gate, SC-008)
+- [X] T053 [P] Performance pass `web/src/engine/` + `web/`: detection loop profiling (20 fps cap, worker isolation), bundle analysis, route-level code splitting for landing/dashboard
+- [X] T054 [P] Documentation `README.md` + `docs/architecture.md`: setup/dev/deploy, data flow including the landmark-only path, citations appendix for wellness content (constitution VI)
 - [ ] T055 Prod deployment verification: `docker compose --profile prod up -d --build`, `prisma migrate deploy`, Caddy TLS smoke per quickstart.md deploy section
 - [ ] T056 Run quickstart.md validation V1–V10 end-to-end and record results
 
