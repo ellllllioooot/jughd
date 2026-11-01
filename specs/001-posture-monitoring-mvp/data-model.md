@@ -43,7 +43,7 @@ Recalibration inserts a new row (versioned history, no updates/deletes).
 | endedAt | timestamptz | null while `ACTIVE` |
 | durationSec | int | ≥0; monitored (non-paused) seconds; set on end |
 | alertCount | int | ≥0; denormalized from alerts on end |
-| accuracyScore | float | 0–100 = share of monitored time in good posture |
+| postureScore | float | 0–100 = share of monitored time in good posture |
 | status | enum | `ACTIVE` \| `COMPLETED` \| `QUOTA_EXHAUSTED` |
 | baselineId | uuid | FK → Baseline — which calibration the session used |
 
@@ -116,15 +116,15 @@ User.tier:
 - `landmarks` / `landmarksSnapshot`: arrays of finite numbers only — schema and
   contract tests reject anything else (privacy invariant: no base64/blob
   fields exist to receive pixels).
-- `durationSec` and `accuracyScore` are client-reported (the server never sees
+- `durationSec` and `postureScore` are client-reported (the server never sees
   frames) and clamped server-side: `0 ≤ durationSec ≤ elapsed wall time + 5%`,
-  `0 ≤ accuracyScore ≤ 100`.
+  `0 ≤ postureScore ≤ 100`.
 - Alert writes are scoped to the caller's own sessions (FR-017 isolation).
 - Quota check is server-side on every session start and end write.
 
 ## Indexes
 
 - `MonitoringSession (userId, startedAt)` — history + quota scans
-- `Alert (sessionId)`, `Alert (userId)` — session detail, accuracy aggregates
+- `Alert (sessionId)`, `Alert (userId)` — session detail, posture-score aggregates
 - `Alert (clientKey)` unique — idempotent outbox flushes
 - `AuthSession (userId)`, `PushSubscription (userId)`
