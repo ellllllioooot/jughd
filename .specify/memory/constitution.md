@@ -16,8 +16,9 @@ compliance risk.
 
 ### II. Memory Safety & Resource Efficiency
 
-Backend and ML code MUST run in memory-safe managed runtimes: Node.js for services,
-TensorFlow.js for model inference and training. Native addons that require manual
+Backend and ML code MUST run in memory-safe managed runtimes: Node.js for
+services, browser-side memory-safe models — MediaPipe BlazePose or TensorFlow.js —
+for model inference and training. Native addons that require manual
 memory management are prohibited. TensorFlow.js tensors MUST be disposed (`tf.tidy`
 or explicit `dispose`); no tensor may survive its inference frame. Inference loops
 MUST run at bounded frame rate and resolution, and memory and CPU usage MUST stay
@@ -85,7 +86,8 @@ excludes users who disable it.
 ## Technology Stack & Deployment Constraints
 
 - Backend: Node.js. ML: TensorFlow.js — in-browser inference, Node-side training
-  pipelines. Landmark extraction runs in the browser via TensorFlow.js models; the
+  pipelines. Landmark extraction runs in the browser via browser-side memory-safe
+  models — MediaPipe BlazePose or TensorFlow.js; the
   backend receives only landmark coordinates and derived metrics.
 - Persistence: account data, landmark coordinates, derived metrics, and user feedback
   labels. No image, video, or frame blobs anywhere — schema, logs, backups, or
@@ -127,4 +129,4 @@ resource bounds, and documentation upkeep. Complexity beyond this constitution M
 be justified in the change that introduces it. Runtime development guidance lives in
 the specs and plans under `.specify/`, which MUST NOT contradict this constitution.
 
-**Version**: 1.0.0 | **Ratified**: 2026-11-01 | **Last Amended**: 2026-11-01
+**Version**: 1.1.0 | **Ratified**: 2026-11-01 | **Last Amended**: 2026-11-01
