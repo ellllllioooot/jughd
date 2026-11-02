@@ -1,0 +1,241 @@
+{
+  "title": "Choose the visual world",
+  "question": "The roll assigned The Illuminated Margin. Keep it, take an alternate, or re-roll.",
+  "options": [
+    {
+      "id": "assigned",
+      "kind": "assigned",
+      "label": "The Illuminated Margin",
+      "kicker": "THE ROLL",
+      "lineage": "tazhib — the illuminated openings and margins of Persian manuscripts",
+      "thesis": "Your posture is the text; the margin names what went wrong with it, in gold, in words.",
+      "palette": [
+        "#101c3e",
+        "#c9a227",
+        "#f2ead6",
+        "#c7442e"
+      ],
+      "materials": [
+        "gold-leaf hairlines",
+        "lapis ground",
+        "jadval text frame",
+        "shamsa medallion"
+      ],
+      "viewport": "An illuminated opening spread: the live webcam mechanism demo runs inside the gold jadval frame as the text, a monumental Persian headline set above it, and the margin names the reason the instant posture breaks.",
+      "risk": "A manuscript frame can read ceremonial and slow for a habit tool — the live demo must dominate the first viewport or the metaphor becomes costume. The margin must never delay the naming of a reason.",
+      "raised": [
+        {
+          "from": "challenger-terminal",
+          "raise": "The Persistent Record: every named alert lands as a durable line in a living record that lingers — verdicts accumulate on the page as evidence, never as ephemeral chrome."
+        },
+        {
+          "from": "challenger-boxwall",
+          "raise": "The Name-and-Shape Pair: no alert category is ever named without its silhouette — name and shape travel together on every card, chip, and margin note."
+        },
+        {
+          "from": "challenger-sand",
+          "raise": "The Settle Grammar: state change reads as material — deviation lifts and cools the surface, confirmation settles it warm and flat, on every state in the system."
+        },
+        {
+          "from": "challenger-grid",
+          "raise": "The Visible Armature: the measurement grid stays visible on the page — the baseline the user is held to is drawn, never hidden."
+        }
+      ]
+    },
+    {
+      "id": "model-pick",
+      "kind": "pick",
+      "label": "The Girih Lattice",
+      "kicker": "IMPECCABLE’S PICK",
+      "lineage": "girih — the interlaced star geometry of Isfahan tilework",
+      "thesis": "Posture is geometry: the page is a girih lattice and the live pose is drawn on the same construction lines that measure it.",
+      "palette": [
+        "#0f3157",
+        "#2e8f8f",
+        "#e8c36a",
+        "#f4efe2"
+      ],
+      "materials": [
+        "tile glaze",
+        "interlaced strapwork",
+        "ten-point star motifs"
+      ],
+      "viewport": "A full lattice field: the live demo stands on the visible construction grid, each alert category a named star motif, the register action set in the central medallion.",
+      "risk": "The most familiar Persian-heritage move in this category — most runs land here, and that familiarity is the honest risk.",
+      "case": ""
+    },
+    {
+      "id": "challenger-specimen",
+      "kind": "challenger",
+      "catalogId": "variable-font-specimen",
+      "label": "The Living Letterform",
+      "verdict": "competitive",
+      "lineage": "variable-font type specimens",
+      "thesis": "A giant Persian letter stands in for your spine, and one posture slider morphs the whole glyph grid live between straight and slouched.",
+      "palette": [
+        "#f7f5f0",
+        "#141414",
+        "#c8442a"
+      ],
+      "materials": [
+        "variable font axes",
+        "paper ground",
+        "mono readouts"
+      ],
+      "viewport": "A single monumental letter fills the first screen with the posture axis slider beneath it, the glyph grid breathing in step as it is dragged.",
+      "risk": "A specimen is designer vernacular — a visitor can mistake it for a font foundry before the posture story lands.",
+      "case": "Fuses cleanly: its one-control live morph is the purest demonstration of deviation and correction on the table; loses audience identification to the manuscript's mass fluency.",
+      "hero": "https://impeccable.style/worlds/cards/variable-font-specimen-hero.webp",
+      "board": "https://impeccable.style/worlds/cards/variable-font-specimen.webp"
+    },
+    {
+      "id": "challenger-moonshadow",
+      "kind": "challenger",
+      "catalogId": "dream-surreal-impossible-worlds-moon-shadow-bazaar",
+      "label": "The Moonlit Shadow Lane",
+      "verdict": "competitive",
+      "lineage": "moon-shadow bazaars of surreal dream-worlds",
+      "thesis": "Your camera-cast silhouette is a shadow on a moonlit lane, compared against the good-posture shadow you calibrated.",
+      "palette": [
+        "#0b1224",
+        "#232a44",
+        "#c9932e",
+        "#dfe6f2"
+      ],
+      "materials": [
+        "moonlight",
+        "layered soft shadows",
+        "stall canvas"
+      ],
+      "viewport": "A vertical moonlit lane where the visitor's own silhouette stands at the first stall, tagged with its deviation from the calibrated shadow.",
+      "risk": "The surreal trading fiction muddies the offer the moment it outruns the compare-and-correct mechanics.",
+      "case": "Fuses cleanly: silhouette-against-baseline compare is the product's measurement story made visible in one glance; loses audience identification to the manuscript.",
+      "hero": "https://impeccable.style/worlds/cards/dream-surreal-impossible-worlds-moon-shadow-bazaar-hero.webp",
+      "board": "https://impeccable.style/worlds/cards/dream-surreal-impossible-worlds-moon-shadow-bazaar.webp"
+    },
+    {
+      "id": "challenger-terminal",
+      "kind": "challenger",
+      "catalogId": "signals-instruments-phosphor-terminal-midnight",
+      "label": "The Midnight Transcript",
+      "verdict": "declined",
+      "lineage": "green-phosphor terminals in midnight machine rooms",
+      "thesis": "Named alerts print themselves as glowing transcript lines in a midnight machine room.",
+      "palette": [
+        "#0a0f0a",
+        "#33ff66",
+        "#1c4a2a"
+      ],
+      "materials": [
+        "phosphor glow",
+        "scanlines",
+        "curved glass"
+      ],
+      "viewport": "A blinking cursor over a growing transcript of named deviations, each line blooming as it lands.",
+      "risk": "Terminal costume alienates the broad desk audience this product exists to serve.",
+      "case": "Fuses poorly: it hands the working screen a costume of the tool the audience operates; loses both axes.",
+      "kept": "Alerts as a persistent living record.",
+      "hero": "https://impeccable.style/worlds/cards/signals-instruments-phosphor-terminal-midnight-hero.webp"
+    },
+    {
+      "id": "challenger-boxwall",
+      "kind": "challenger",
+      "catalogId": "textiles-weave-drape-fashion-sneaker-box-stacks",
+      "label": "The Archive Wall",
+      "verdict": "declined",
+      "lineage": "sneaker-archive box walls and colorway labels",
+      "thesis": "Alert categories named like colorways, each with its silhouette printed on the box end.",
+      "palette": [
+        "#c2571f",
+        "#171717",
+        "#f2ede4"
+      ],
+      "materials": [
+        "cardboard board",
+        "tissue paper",
+        "silhouette line art"
+      ],
+      "viewport": "A wall of stacked category cards; the live one pulls halfway out of the stack and the lid hinges open.",
+      "risk": "Retail-box theater dresses a health habit in collector costume.",
+      "case": "Fuses poorly: sneaker-archive nostalgia is not this audience's world; loses both axes.",
+      "kept": "Name and shape never travel apart.",
+      "hero": "https://impeccable.style/worlds/cards/textiles-weave-drape-fashion-sneaker-box-stacks-hero.webp"
+    },
+    {
+      "id": "challenger-sand",
+      "kind": "challenger",
+      "catalogId": "kinetic-sand-glyphs",
+      "label": "The Kinetic Relief",
+      "verdict": "declined",
+      "lineage": "Afrofuturist kinetic-sand control surfaces",
+      "thesis": "Posture states rise and settle as relief in warm gold sand under a rotating glyph ring.",
+      "palette": [
+        "#c98f3f",
+        "#3d2b1f",
+        "#12100e",
+        "#e8b64c"
+      ],
+      "materials": [
+        "kinetic sand relief",
+        "antique gold light"
+      ],
+      "viewport": "A raised-sand ring of glyphs encircles the live pose; confirmation settles the relief warm and flat.",
+      "risk": "A foreign cultural home and a control-surface costume on a consumer offer.",
+      "case": "Fuses poorly: this is not the audience's cultural world and the form reads as an instrument costume; loses both axes.",
+      "kept": "State change as material relief and warmth.",
+      "hero": "https://impeccable.style/worlds/cards/kinetic-sand-glyphs-hero.webp"
+    },
+    {
+      "id": "challenger-grid",
+      "kind": "challenger",
+      "catalogId": "crouwel-grid-specimen",
+      "label": "The Visible Grid",
+      "verdict": "declined",
+      "lineage": "Wim Crouwel grid-constructed type specimens",
+      "thesis": "Letterforms built cell by cell on a visible construction grid, where the slouch is the one diagonal the system permits.",
+      "palette": [
+        "#f5f5f5",
+        "#111111",
+        "#2b4ea8"
+      ],
+      "materials": [
+        "construction grid",
+        "grid-built letterforms"
+      ],
+      "viewport": "An enormous grid-built headline over faint construction lines, one diagonal breaking the cells.",
+      "risk": "Design-culture abstraction outruns a mass audience's first glance.",
+      "case": "Fuses poorly: Dutch modernist culture is not this audience's, and the metaphor is read only by designers; loses both axes.",
+      "kept": "The measurement armature stays drawn.",
+      "hero": "https://impeccable.style/worlds/cards/crouwel-grid-specimen-hero.webp"
+    }
+  ],
+  "reroll": {
+    "registers": [
+      "safer",
+      "bolder"
+    ]
+  },
+  "buildPath": {
+    "value": "code",
+    "toggle": false
+  },
+  "canon": true,
+  "canonCard": {
+    "kind": "canon",
+    "label": "The Category Standard",
+    "thesis": "What posture SaaS ships, executed impeccably: centered hero over subcopy and a CTA, the dashboard screenshot floating below, three feature cards.",
+    "palette": [
+      "#ffffff",
+      "#0f172a",
+      "#2563eb"
+    ],
+    "materials": [
+      "clean grid",
+      "product screenshot"
+    ],
+    "viewport": "The arrangement a visitor expects, at full craft: headline, CTA, floating product shot, feature row.",
+    "risk": "Indistinguishable from the competition by design.",
+    "comp": ""
+  },
+  "steer": true
+}
